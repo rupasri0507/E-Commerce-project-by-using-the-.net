@@ -1,6 +1,13 @@
 /**
  * DevStore API Client
  * Centralized HTTP client communicating with ASP.NET Core Web API backend.
+ *
+ * API Base URL priority:
+ *  1. VITE_API_URL environment variable (set in Vercel dashboard for production)
+ *  2. Falls back to localhost:5000 for local development
+ *
+ * To configure on Vercel:
+ *  Go to Project Settings → Environment Variables → Add VITE_API_URL = https://your-backend-url/api
  */
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
