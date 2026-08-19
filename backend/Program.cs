@@ -87,16 +87,13 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// 6. Configure HTTP Request Pipeline
-if (app.Environment.IsDevelopment())
+// 6. Configure HTTP Request Pipeline - Enable Swagger in all environments for API testing
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "DevStore E-Commerce API v1");
-        c.RoutePrefix = "swagger";
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "DevStore E-Commerce API v1");
+    c.RoutePrefix = "swagger";
+});
 
 // Enable CORS
 app.UseCors("AllowReactApp");
@@ -104,6 +101,15 @@ app.UseCors("AllowReactApp");
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Root welcome message
+app.MapGet("/", () => Results.Ok(new
+{
+    message = "Welcome to the DevStore ASP.NET Core .NET 8 E-Commerce API!",
+    swagger = "/swagger",
+    products = "/api/products",
+    health = "/api/health"
+}));
 
 // Health check endpoint
 app.MapGet("/api/health", () => Results.Ok(new 
